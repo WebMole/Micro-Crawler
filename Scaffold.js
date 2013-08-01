@@ -135,7 +135,7 @@ function MuCrawler() // {{{
     var dom = DomNode.parseFromDom(doc);
     // Add URL
     dom.setAttribute("url", ifr.src);
-    this.wsm.setCurrentDom(dom, this.next_click.getContents());
+    this.wsm.setCurrentDom(dom, this.next_click.getContents(), doc);
     $("#nodeid").html(this.wsm.m_currentNodeId);
     this.next_click = this.wsm.getNextClick();
     if (this.next_click === null)
