@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Readme</title>
+<script type="text/javascript" src="../jquery-1.10.2.js"></script>
+<script type="text/javascript" src="../Readme.js"></script>
+</head>
+<body>
+<h1>Readme</h1>
+
+<p>A web site with one PHP session variable. The variable is reset when
+visiting <tt>index.php</tt>, inverted when visiting <tt>page2.php</tt>.
+The remaining two pages have a different content depending on the value of
+the session variable. Any crawler that does not reset from the start page will fail to visit
+all states.
+A proper exploration with the NoBacktrackWsm yields
+the following graph:</p>
+
+<p class="animation"><img src="explo-NoBacktrack.gif" alt="Exploration" /></p>
+
+</body>
+</html>

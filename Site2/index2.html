@@ -1,0 +1,35 @@
+<html>
+<head>
+<script type="text/javascript" src="../jquery-1.10.2.js"></script>
+<title>A page</title>
+<!-- Alternate version with a elements instead of li -->
+</head>
+<body>
+<h1>A page</h1>
+
+<ul>
+<button>Element 1</button>
+<button>Element 2</button>
+<button>Element 3</button>
+</ul>
+
+<p id="target">Some paragraph</p>
+
+<script type="text/javascript">
+//<![CDATA[
+$("button").click(function () {
+    var contents = $(this).html();
+    var out = "";
+    if (contents == "Element 1")
+      out = "A first paragraph";
+    if (contents == "Element 2")
+      out = "A second paragraph";
+    if (contents == "Element 3")
+      out = "A third paragraph";
+    $("#target").html(out);
+    return false;
+});
+//]]>
+</script>
+</body>
+</html>

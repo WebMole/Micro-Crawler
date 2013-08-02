@@ -26,6 +26,7 @@ function MuCrawler() // {{{
   this.step_count = 0;
   this.pause_interval = 500;
   this.app_prefix = "";
+  this.highlight_elements = false;
   this.crawler_prefix = document.URL.substring(0, document.URL.lastIndexOf("/") + 1);
   
   this.load_url = function(url)
@@ -50,7 +51,22 @@ function MuCrawler() // {{{
   
   this.dot_refresh = function()
   {
-    $("#nodecontents").html(this.wsm.m_domTree.toString(true));
+    if (mucrawler.wsm === undefined || mucrawler.wsm === null)
+    {
+      console.log("Cannot serialize: WSM is undefined");
+      return;
+    }
+    var type = $("input[name=outputType]:checked").val();
+    if (type === "dot")
+    {
+      $("#dot-contents").val(mucrawler.wsm.toDot());
+      //$("#nodecontents").html(this.wsm.m_domTree.toString(true));
+    }
+    else if (type === "xml")
+    {
+      $("#dot-contents").val(mucrawler.wsm.toXml());
+      //$("#nodecontents").html(this.wsm.m_domTree.toXml(true));
+    }
   };
   
   this.instantiate_wsm = function(wsmtype) // {{{
@@ -94,7 +110,7 @@ function MuCrawler() // {{{
     if (this.next_click === null)
     {
       $("#elpath").html("I SAID we are done!");
-      $("#dot-contents").val(this.wsm.toDot());
+      mucrawler.dot_refresh();
       return; // We are done
     }
     if (this.next_click.getContents() !== "")
@@ -150,16 +166,19 @@ function MuCrawler() // {{{
     {
       $("#elpath").html(this.next_click.getContents());
       // Highlight next click in iframe
-      if (this.last_el !== null && this.last_el_color !== "")
+      if (this.highlight_elements)
       {
-        this.last_el.style.border = this.last_el_color;
+        if (this.last_el !== null && this.last_el_color !== "")
+        {
+          this.last_el.style.border = this.last_el_color;
+        }
+        var el = get_element_from_path(doc, new PathExpression(this.next_click.getContents()));
+        this.last_el = el;
+        this.last_el_color = el.style.border;
+        if (this.last_el_color === "")
+            this.last_el_color = "none";
+        el.style.border = 'dashed 1px red';
       }
-      var el = get_element_from_path(doc, new PathExpression(this.next_click.getContents()));
-      this.last_el = el;
-      this.last_el_color = el.style.border;
-      if (this.last_el_color === "")
-          this.last_el_color = "none";
-      el.style.border = 'dashed 1px red';
     }
     $("#nodecontents").html(this.wsm.m_domTree.toString(true));
     $("#wsm-size-nodes").html(this.wsm.countNodes());
@@ -241,6 +260,7 @@ $(document).ready(function() {
     
     // Assign handler to button "DOT refresh"
     $("#btn-dot-refresh").click(mucrawler.dot_refresh);
+    $("input[name=outputType]").click(mucrawler.dot_refresh);
     
     // Assign handler to button "instantiate"
     $("#btn-instantiate-wsm").click(function () {
@@ -253,6 +273,28 @@ $(document).ready(function() {
     });
     
     $("#poll-interval-slider").slider({"min": 1, "max": 5, "value" : 3, "change": poll_interval_slide_change});
+    
+    $("#highlight").click(function() {
+        if ($("#highlight").prop("checked"))
+        {
+          mucrawler.highlight_elements = false;
+        }
+        else
+        {
+          mucrawler.highlight_elements = true;
+        }
+    });
+    
+    $("#ignoreattributes").click(function() {
+        if ($("#ignoreattributes").prop("checked"))
+        {
+          DomNode.IGNORE_ATTRIBUTES = true;
+        }
+        else
+        {
+          DomNode.IGNORE_ATTRIBUTES = false;
+        }
+    });
     
     define_oracles();
 });

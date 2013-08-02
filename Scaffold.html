@@ -32,7 +32,7 @@
 
 <h2>Mini-browser</h2>
 
-URL: <input type="text" id="starturl" value="Site1/index.html" /> <button id="btn-load">Go</button><br />
+URL: <input type="text" id="starturl" value="Site5/index.php" /> <button id="btn-load">Go</button><br />
 <iframe id="navwindow">
 An error occurred
 </iframe>
@@ -75,6 +75,7 @@ An error occurred
 </li>
 
 <li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
+<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
 <li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
 </ul>
 
@@ -86,7 +87,9 @@ An error occurred
 <ul id="stats-panel">
 <li>Step #<span id="stepid"></span></li>
 <li>Current node ID: <span id="nodeid"></span></li>
-<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a></li>
+<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a><br/>
+<input type="checkbox" id="highlight" /> Highlight in window
+</li>
 <li>WSM size: <span id="wsm-size-nodes"></span> nodes, <span id="wsm-size-edges"></span> edges, <span id="wsm-size-bytes"></span> bytes</li>
 </ul>
 </div>
@@ -95,10 +98,13 @@ An error occurred
 <pre id="nodecontents"></pre>
 
 <div class="square">
-<h2>DOT file</h2>
-<div id="toppathwrap">
-<textarea id="dot-contents"></textarea>
+<h2>Output file</h2>
+<div>
+<input type="radio" name="outputType" value="dot" checked="checked" />&nbsp;DOT
+<input type="radio" name="outputType" value="xml" />&nbsp;XML
 </div>
+<textarea id="dot-contents"></textarea>
+
 <div><button id="btn-dot-refresh">Refresh</button></div>
 </div>
 

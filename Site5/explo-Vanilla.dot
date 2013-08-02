@@ -1,0 +1,13 @@
+digraph G {
+  1 [shape=circle,label="1"]; ## 0
+  1 -> 2 [label="HTML/BODY[0]/A[0]"]; ## 1
+  2 [shape=circle,label="2"]; ## 2
+  2 -> 3 [label="HTML/BODY[0]/A[0]"]; ## 3
+  3 [shape=circle,label="3"]; ## 4
+  3 -> 4 [label="HTML/BODY[0]/A[0]"]; ## 5
+  4 [shape=circle,label="4"]; ## 6
+  4 -> 5 [label="HTML/BODY[0]/A[0]"]; ## 7
+  5 [shape=circle,label="5"]; ## 8
+  0 [shape=none,label=""]; ## 0
+  0 -> 1; ## 0
+}
