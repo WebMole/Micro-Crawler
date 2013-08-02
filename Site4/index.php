@@ -2,6 +2,7 @@
 session_start();
 session_destroy();
 session_start();
+include("record.php");
 ?>
 <html>
 <head>
@@ -12,6 +13,6 @@ session_start();
 
 <p>Hello bambini!</p>
 
-<a href="page1.php">To page 1</a> <a href="page2.php">To page 2</a>
+<a href="page2.php">To page 2</a> <a href="page1.php">To page 1</a>
 </body>
 </html>

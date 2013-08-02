@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("record.php");
 ?>
 <html>
 <head>
@@ -21,6 +22,5 @@ else
 ?>
 <a href="page1.php">To page 1</a>
 <a href="page3.php">To page 3</a>
-<a href="#">Dummy</a>
 </body>
 </html>

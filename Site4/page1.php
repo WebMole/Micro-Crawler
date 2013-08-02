@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("record.php");
 ?>
 <html>
 <head>
