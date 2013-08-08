@@ -1,0 +1,51 @@
+{
+  "name": "Micro-Crawler",
+  "description": "A basic and tiny crawler that uses the Web-State-Machine algorithms",
+  "version": "0.0.1",
+  "keywords": [
+    "Crawler"
+  ],
+  "contributors": [
+    {
+      "name": "Gabriel Le Breton",
+      "email": "lebreton.gabriel@gmail.com",
+      "web": "http://www.gableroux.com/"
+    }
+  ],
+  "author": [
+    {
+      "name": "Sylvain Hallé",
+      "email": "shalle@acm.org",
+      "web": "http://www.leduotang.com/sylvain/"
+    }
+  ],
+  "bugs": {
+    "web": "https://github.com/WebMole/Micro-Crawler/issues"
+  },
+  "repository": [
+    {
+      "type": "git",
+      "url": "https://github.com/WebMole/Micro-Crawler.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "GNU General Public License",
+      "url": "http://www.gnu.org/licenses"
+    }
+  ],
+  "devDependencies":
+  {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-contrib-jasmine": "~0.5.1",
+    "bower": "~1.1.0"
+  },
+  "dependencies":
+  { 
+    "Web-State-Machine" : "git://github.com/WebMole/Web-State-Machine.git"
+  }
+}
