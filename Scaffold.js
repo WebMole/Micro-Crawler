@@ -39,6 +39,13 @@ function MuCrawler() // {{{
       ifr.src = url;
       $("#starturl").val(url);
     }
+	else if (url[0] == "#")
+	{
+	  // Anchor within page
+	  var new_url = this.app_prefix + url;
+      ifr.src = new_url;
+      $("#starturl").val(this.crawler_prefix + new_url);
+	}
     else
     {
       // Relative URL
