@@ -4,14 +4,20 @@ A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/We
 
 ## Installation
 
-First, you will need the dependencies, just install [Node.js](http://nodejs.org/) and [npm](https://npmjs.org/)
+First, you will need the dependencies, just install [Node.js](http://nodejs.org/), [npm](https://npmjs.org/) and [bower](http://bower.io/)
 
-Then, install dependencies
+Install npm dependencies
 
 	npm install
 
+Install browser dependencies
+
+	bower install
+
 ## Development
 
-We will use [gruntjs](http://gruntjs.com/) *No `gruntfile.js` yet, comming soon*
+Use [gruntjs](http://gruntjs.com/)
 
 	grunt
+
+Not much implemented in the `gruntfile` yet, there's only [livereload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) working atm but we may add minification and other cool things ;)

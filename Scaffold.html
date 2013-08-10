@@ -1,118 +1,121 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!doctype html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>&mu;-Crawler</title>
-<link rel="stylesheet" type="text/css" href="screen.css" />
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script type="text/javascript" src="jquery-1.10.2.js"></script>
-<script type="text/javascript" src="jquery-ui.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/Dom.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/Wsm.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/VanillaWsm.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/NoBacktrackWsm.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/WebOnePointOhWsm.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/BacktrackWsm.js"></script>
-<script type="text/javascript" src="node_modules/Web-State-Machine/src/TansuoWsm.js"></script>
-<script type="text/javascript" src="Scaffold.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>&mu;-Crawler</title>
+	<link rel="stylesheet" type="text/css" href="style/screen.css" />
+	<link rel="stylesheet" type="text/css" href="components/jquery-ui/themes/smoothness/jquery-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="components/jquery-ui/themes/smoothness/jquery.ui.theme.css" />
 </head>
 <body>
 
-<div id="header">
-<h1>&mu;-Crawler</h1>
-<p>A micro-crawler</p>
-</div>
+	<div id="header">
+		<h1>&mu;-Crawler</h1>
+		<p>A micro-crawler</p>
+	</div>
 
-<div id="inside">
+	<div id="inside">
 
-<div id="column-left">
+		<div id="column-left">
 
-<div id="minibrowser" class="square">
+			<div id="minibrowser" class="square">
 
-<h2>Mini-browser</h2>
+				<h2>Mini-browser</h2>
 
-URL: <input type="text" id="starturl" value="Site5/index.php" /> <button id="btn-load">Go</button><br />
-<iframe id="navwindow">
-An error occurred
-</iframe>
+				URL: <input type="text" id="starturl" value="sites/" /> <button id="btn-load">Go</button><br />
+				<iframe id="navwindow">
+					An error occurred
+				</iframe>
 
-</div>
+			</div>
 
-<div class="square">
-<h2>Oracles</h2>
+			<div class="square">
+				<h2>Oracles</h2>
 
-<p>Stop oracle:</p>
-<textarea id="stop-oracle">WebStateMachine.stop_oracle = function(dom) {
-  return false;
-};</textarea>
+				<p>Stop oracle:</p>
+				<textarea id="stop-oracle">WebStateMachine.stop_oracle = function(dom) {
+					return false;
+				};</textarea>
 
-<p>Test oracle:</p>
-<textarea id="test-oracle">WebStateMachine.test_oracle = function(dom) {
-  return true;
-};</textarea>
-<div><button id="btn-define-oracles">Redefine</button></div>
+				<p>Test oracle:</p>
+				<textarea id="test-oracle">WebStateMachine.test_oracle = function(dom) {
+					return true;
+				};</textarea>
+				<div><button id="btn-define-oracles">Redefine</button></div>
 
-</div>
+			</div>
 
-</div> <!-- /column-left -->
+		</div> <!-- /column-left -->
 
-<div id="column-right">
+		<div id="column-right">
 
-<div class="square" id="wsm-settings">
+			<div class="square" id="wsm-settings">
 
-<h2>WSM settings</h2>
+				<h2>WSM settings</h2>
 
-<ul>
-<li>WSM preset: <select id="wsmtype">
-<option value="vanilla">Vanilla</option>
-<option value="nobacktrack">No-backtrack</option>
-<option value="onepointoh">Web 1.0</option>
-<option value="backtrack">Backtrack</option>
-<option value="tansuo">Tansuo</option>
-</select>
-<button id="btn-instantiate-wsm">Instantiate</button>
-</li>
+				<ul>
+					<li>WSM preset: <select id="wsmtype">
+						<option value="vanilla">Vanilla</option>
+						<option value="nobacktrack">No-backtrack</option>
+						<option value="onepointoh">Web 1.0</option>
+						<option value="backtrack">Backtrack</option>
+						<option value="tansuo">Tansuo</option>
+					</select>
+					<button id="btn-instantiate-wsm">Instantiate</button>
+				</li>
 
-<li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
-<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
-<li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
-</ul>
+				<li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
+				<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
+				<li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
+			</ul>
 
-</div>
+		</div>
 
-<div id="wsm-stats" class="square">
-<h2>WSM statistics</h2>
-<p id="no-stats-panel">No WSM has been instantiated. Instantiate a WSM first.</p>
-<ul id="stats-panel">
-<li>Step #<span id="stepid"></span></li>
-<li>Current node ID: <span id="nodeid"></span></li>
-<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a><br/>
-<input type="checkbox" id="highlight" /> Highlight in window
-</li>
-<li>WSM size: <span id="wsm-size-nodes"></span> nodes, <span id="wsm-size-edges"></span> edges, <span id="wsm-size-bytes"></span> bytes</li>
-</ul>
-</div>
+		<div id="wsm-stats" class="square">
+			<h2>WSM statistics</h2>
+			<p id="no-stats-panel">No WSM has been instantiated. Instantiate a WSM first.</p>
+			<ul id="stats-panel">
+				<li>Step #<span id="stepid"></span></li>
+				<li>Current node ID: <span id="nodeid"></span></li>
+				<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a><br/>
+					<input type="checkbox" id="highlight" /> Highlight in window
+				</li>
+				<li>WSM size: <span id="wsm-size-nodes"></span> nodes, <span id="wsm-size-edges"></span> edges, <span id="wsm-size-bytes"></span> bytes</li>
+			</ul>
+		</div>
 
-<!-- Contents of the current node in the WSM's memory -->
-<pre id="nodecontents"></pre>
+		<!-- Contents of the current node in the WSM's memory -->
+		<pre id="nodecontents"></pre>
 
-<div class="square">
-<h2>Output file</h2>
-<div>
-<input type="radio" name="outputType" value="dot" checked="checked" />&nbsp;DOT
-<input type="radio" name="outputType" value="xml" />&nbsp;XML
-</div>
-<textarea id="dot-contents"></textarea>
+		<div class="square">
+			<h2>Output file</h2>
+			<div>
+				<input type="radio" name="outputType" value="dot" checked="checked" />&nbsp;DOT
+				<input type="radio" name="outputType" value="xml" />&nbsp;XML
+			</div>
+			<textarea id="dot-contents"></textarea>
 
-<div><button id="btn-dot-refresh">Refresh</button></div>
-</div>
+			<div><button id="btn-dot-copy">Copy</button></div>
+			<div><button id="btn-dot-refresh">Refresh</button></div>
+		</div>
 
-</div>
 
-<div class="clearer"></div>
+	</div> <!-- /inside -->
 
-</div> <!-- /inside -->
+	<div class="clearer"></div>
+
+	<!-- They say it's better in the footer -->
+	<script type="text/javascript" src="components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="components/jquery-zclip/jquery.zclip.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/Dom.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/Wsm.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/VanillaWsm.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/NoBacktrackWsm.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/WebOnePointOhWsm.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/BacktrackWsm.js"></script>
+	<script type="text/javascript" src="node_modules/Web-State-Machine/src/TansuoWsm.js"></script>
+	<script type="text/javascript" src="scripts/Scaffold.js"></script>
 
 </body>
 </html>
