@@ -47,17 +47,13 @@ html, body {
 }
 
 #inside {
-  padding: 8px;
+  padding: 10px;
 }
 
-#column-left {
-  width: 420px;
+.column{
+  min-width: 420px;
   float: left;
-  margin-right: 36px;
-}
-
-#column-right {
-  float: left;
+  margin-right: 10px;
 }
 
 .clearer {
@@ -72,8 +68,22 @@ html, body {
   padding: 6px;
   margin-top: 39px;
   margin-bottom: 30px;
-  box-shadow: 10px 10px 5px #888;
+  
+          transition: box-shadow 0.2s;
+  -webkit-transition: box-shadow 0.2s; /* Safari */
+  
+     webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
+
+.square:hover
+{
+     webkit-box-shadow:0 3px 4px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 3px 4px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 3px 4px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
 
 .square > h2 {
   height: 30px;

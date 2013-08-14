@@ -16,7 +16,7 @@
 
 	<div id="inside">
 
-		<div id="column-left">
+		<div class="column">
 
 			<div id="minibrowser" class="square">
 
@@ -45,57 +45,69 @@
 
 			</div>
 
-		</div> <!-- /column-left -->
+		</div><!-- /column 1 -->
 
-		<div id="column-right">
+		<div class="column">
 
 			<div class="square" id="wsm-settings">
 
 				<h2>WSM settings</h2>
 
 				<ul>
-					<li>WSM preset: <select id="wsmtype">
-						<option value="vanilla">Vanilla</option>
-						<option value="nobacktrack">No-backtrack</option>
-						<option value="onepointoh">Web 1.0</option>
-						<option value="backtrack">Backtrack</option>
-						<option value="tansuo">Tansuo</option>
-					</select>
-					<button id="btn-instantiate-wsm">Instantiate</button>
-				</li>
+					<li>WSM preset:
+						<select id="wsmtype">
+							<option value="vanilla">Vanilla</option>
+							<option value="nobacktrack">No-backtrack</option>
+							<option value="onepointoh">Web 1.0</option>
+							<option value="backtrack">Backtrack</option>
+							<option value="tansuo">Tansuo</option>
+						</select>
+						<button id="btn-instantiate-wsm">Instantiate</button>
+					</li>
 
-				<li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
-				<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
-				<li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
-			</ul>
+					<li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
+					<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
+					<li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
+				</ul>
 
-		</div>
-
-		<div id="wsm-stats" class="square">
-			<h2>WSM statistics</h2>
-			<p id="no-stats-panel">No WSM has been instantiated. Instantiate a WSM first.</p>
-			<ul id="stats-panel">
-				<li>Step #<span id="stepid"></span></li>
-				<li>Current node ID: <span id="nodeid"></span></li>
-				<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a><br/>
-					<input type="checkbox" id="highlight" /> Highlight in window
-				</li>
-				<li>WSM size: <span id="wsm-size-nodes"></span> nodes, <span id="wsm-size-edges"></span> edges, <span id="wsm-size-bytes"></span> bytes</li>
-			</ul>
-		</div>
-
-		<!-- Contents of the current node in the WSM's memory -->
-		<pre id="nodecontents"></pre>
-
-		<div class="square">
-			<h2>Output file</h2>
-			<div>
-				<input type="radio" name="outputType" value="dot" checked="checked" />&nbsp;DOT
-				<input type="radio" name="outputType" value="xml" />&nbsp;XML
 			</div>
-			<textarea id="dot-contents"></textarea>
-			<div><button id="btn-dot-refresh">Refresh</button></div>
-		</div>
+
+			<div id="wsm-stats" class="square">
+				<h2>WSM statistics</h2>
+				<p id="no-stats-panel">No WSM has been instantiated. Instantiate a WSM first.</p>
+				<ul id="stats-panel">
+					<li>Step #<span id="stepid"></span></li>
+					<li>Current node ID: <span id="nodeid"></span></li>
+					<li>Next element to click: <a id="elpath" href="#" title="Click here to perform next exploration step"></a><br/>
+						<input type="checkbox" id="highlight" /> Highlight in window
+					</li>
+					<li>WSM size: <span id="wsm-size-nodes"></span> nodes, <span id="wsm-size-edges"></span> edges, <span id="wsm-size-bytes"></span> bytes</li>
+				</ul>
+			</div>
+
+			<!-- Contents of the current node in the WSM's memory -->
+			<pre id="nodecontents"></pre>
+
+			<div class="square">
+				<h2>Output file</h2>
+				<div>
+					<input type="radio" name="outputType" value="dot" checked="checked" />&nbsp;DOT
+					<input type="radio" name="outputType" value="xml" />&nbsp;XML
+				</div>
+				<textarea id="dot-contents"></textarea>
+				<div><button id="btn-dot-refresh">Refresh</button></div>
+			</div>
+
+		</div><!-- /column 2 -->
+
+		<div class="column">
+			<div class="square">
+				<h2>GraphViz</h2>
+				<div id="dot-graph"></div>
+				<div><button id="btn-graph-refresh">Refresh</button></div>
+			</div>
+
+		</div><!-- /column 3 -->
 
 
 	</div> <!-- /inside -->
@@ -105,7 +117,7 @@
 	<!-- They say it's better in the footer -->
 	<script type="text/javascript" src="components/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="components/jquery-zclip/jquery.zclip.js"></script>
+	<script type="text/javascript" src="components/viz.js/viz.js"></script>
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/Dom.js"></script>
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/Wsm.js"></script>
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/VanillaWsm.js"></script>

@@ -74,7 +74,14 @@ function MuCrawler() // {{{
       $("#dot-contents").val(mucrawler.wsm.toXml());
       //$("#nodecontents").html(this.wsm.m_domTree.toXml(true));
     }
+    this.generate_dot_graph(mucrawler.wsm.toDot());
   };
+
+  this.generate_dot_graph = function()
+  {
+    var result = Viz(mucrawler.wsm.toDot(), "svg");
+    $("#dot-graph").html(result);
+  }
   
   this.instantiate_wsm = function(wsmtype) // {{{
   {
@@ -267,6 +274,9 @@ $(document).ready(function() {
     // Assign handler to button "DOT refresh"
     // $("#btn-dot-refresh").click(mucrawler.dot_refresh);
     
+    // Assing handler to button "Graph refresh"
+    $("#btn-graph-refresh").click( mucrawler.generate_dot_graph );
+
     // Selects all text on the dot-contents textarea
     $("#dot-contents").on('mouseup', function() { $(this).select(); });
 
