@@ -240,14 +240,6 @@ function poll_interval_slide_change(event, ui)
   $("#poll-interval").html(out);
 }
 
-// function copy_dot()
-// {
-//   jQuery.fn.zclip({
-//       path:'components/jquery-zclip/ZeroClipboard.swf',
-//       copy:$('#dot-contents').val()
-//     });
-// }
-
 $(document).ready(function() {
     mucrawler = new MuCrawler();
     
@@ -274,10 +266,11 @@ $(document).ready(function() {
     
     // Assign handler to button "DOT refresh"
     // $("#btn-dot-refresh").click(mucrawler.dot_refresh);
+    
+    // Selects all text on the dot-contents textarea
+    $("#dot-contents").on('mouseup', function() { $(this).select(); });
 
-    // Assign handler to button "Copy"
-    $('#btn-dot-refresh').click(copy_dot);
-
+    // Assign handler "Refresh"
     $("input[name=outputType]").click(mucrawler.dot_refresh);
     
     // Assign handler to button "instantiate"
