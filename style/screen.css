@@ -22,9 +22,22 @@ html, body {
 #nodecontents {
   display: none;
 }
+
 #dot-contents {
+  background: white;
   width: 400px;
   height: 150px;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+#dot-graph {
+  background: white;
+  padding: 3px;
+  border-radius: 3px;
+  margin: 5px;
+  border: 1px solid black;
+  text-align: center;
 }
 
 #header {
