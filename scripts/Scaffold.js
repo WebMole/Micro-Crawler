@@ -132,15 +132,8 @@ function MuCrawler() // {{{
       var el = get_element_from_path(doc, new PathExpression(this.next_click.getContents()));
       if (el === undefined)
         console.error("Element should not be undefined");
-      if (el.nodeName === "A" || el.nodeName === "a")
-      {
-        // Manually set the iframe source
-        this.load_url($(el).attr('href'));
-      }
-      else
-      {
-        $(el).click(); // jQuery trickery to provoke click
-      }
+
+      $(el)[0].click(); // jQuery trickery to provoke click, specified [0] to work with anchors
     }
     else
     {
