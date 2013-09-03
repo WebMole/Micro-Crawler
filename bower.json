@@ -12,8 +12,5 @@
     "jquery": "~2.0.3",
     "jquery-ui": "~1.10.3",
     "viz.js": "git://github.com/mdaines/viz.js.git#b3de152e872f39d675397b4c3589f5a11c6b0442"
-  },
-  "resolutions": {
-    "jquery": "~2.0.3"
   }
 }
