@@ -133,7 +133,7 @@ function transform_dot($s, $step_num)
       $out .= $line."\n";
       continue;
     }
-    list($dot, $comments) = explode("##", $line);
+    list($dot, $comments) = explode("//", $line);
     $comments = trim($comments);
     $steps = explode(",", $comments);
     $on_step = -1;
