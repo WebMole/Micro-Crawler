@@ -59,6 +59,20 @@ html, body {
   display: none;
 }
 
+#footer {
+  background: #222;
+  color: #ffffff;
+  padding: 5px;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+}
+
+#footer a {
+  text-decoration: none;
+  color: #ee8;
+}
+
 #inside {
   padding: 10px;
 }

@@ -14,6 +14,18 @@ Install browser dependencies
 
 	bower install
 
+## Usage
+
+Run website on a webserver
+
+### Same Origin Policy
+
+You should consider launching your Chrome with `--disable-web-security` to bypass [SOP](http://en.wikipedia.org/wiki/Same_origin_policy) with javascript execution inside an `iframe`.
+
+Note: it won't allow access to websites that specify the origin in their header.
+
+More info on [stackoverflow](http://stackoverflow.com/questions/3102819/chrome-disable-same-origin-policy)
+
 ## Development
 
 Use [gruntjs](http://gruntjs.com/)

@@ -23,6 +23,8 @@
 				<h2>Mini-browser</h2>
 
 				URL: <input type="text" id="starturl" value="sites/" /> <button id="btn-load">Go</button><br />
+                Domain: <input type="text" id="domain" value="" />
+                <input type="checkbox" id="restrictDomain" checked="true" /> Restrict Domain<br />
 				<iframe id="navwindow">
 					An error occurred
 				</iframe>
@@ -67,6 +69,7 @@
 
 					<li><input type="checkbox" id="automode" checked="true" /> Explore automatically</li>
 					<li><input type="checkbox" id="ignoreattributes" checked="true" /> Ignore attributes</li>
+					<li><input type="checkbox" id="useTimeout" checked="true" /> Use timeout between exploration steps</li>
 					<li><div id="poll-interval-slider"></div> Exploration speed: <span id="poll-interval">0.5 s</span></li>
 				</ul>
 
@@ -114,6 +117,8 @@
 
 	<div class="clearer"></div>
 
+    <div id="footer">Visit us on <a href="http://www.github.com/webmole/" target="_blank">GitHub</a></div>
+
 	<!-- They say it's better in the footer -->
 	<script type="text/javascript" src="components/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
@@ -125,6 +130,7 @@
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/WebOnePointOhWsm.js"></script>
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/BacktrackWsm.js"></script>
 	<script type="text/javascript" src="node_modules/Web-State-Machine/src/TansuoWsm.js"></script>
+    <script type="text/javascript" src="scripts/AjaxListener.js"></script>
 	<script type="text/javascript" src="scripts/Scaffold.js"></script>
 
 </body>
