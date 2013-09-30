@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("record.php");
+include("../lib/record.php");
 ?>
 <html>
 <head>

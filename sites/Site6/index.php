@@ -1,6 +1,6 @@
 <?php
 include("config.php");
-include("record.php");
+include("../lib/record.php");
 $p = isset($_GET["p"]) ? $_GET["p"] : 0;
 ?>
 <html>
