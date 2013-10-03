@@ -1,19 +1,24 @@
+// @todo: save preferences in local storage :)
+
 /**
  * Crawler Object containing the selected Web State Machine (wsm) and edges (elements to click)
- *
  * @constructor
  */
 function MuCrawler()
 {
   this.wsm = null;
+  this.ifr = document.getElementById("navwindow");
   this.next_click = new WsmEdge();
   this.last_el_color = "";
   this.last_el = null;
   this.step_count = 0;
   this.pause_interval = 500;
   this.app_prefix = "";
-  this.highlight_elements = false;
+  this.highlight_elements = false; // @todo: fix element highlighting checkbox to work out of the box (click twice to make it work atm)
   this.use_timeout = true;
+  this.base_domain = "";
+  this.stay_on_base_domain = true; // If false, will continue navigation even if we move from one site to another
+  this.verifyLink = true; // if true, prevents click instead of going into the url and comparing domain
   this.crawler_prefix = document.URL.substring(0, document.URL.lastIndexOf("/") + 1);
 
   this.load_url = function(url)
@@ -23,25 +28,46 @@ function MuCrawler()
       // Absolute URL
       var without_c_p = url.substring(this.crawler_prefix.length);
       this.app_prefix = without_c_p.substring(0, without_c_p.lastIndexOf("/") + 1);
-      ifr.src = url;
+      this.ifr.src = url;
       $("#starturl").val(url);
     }
-	else if (url[0] == "#")
-	{
-	  // Anchor within page
-	  var new_url = this.app_prefix + url;
-      ifr.src = new_url;
-      $("#starturl").val(this.crawler_prefix + new_url);
-	}
+    else if (url[0] == "#")
+    {
+      // Anchor within page
+      var new_url = this.app_prefix + url;
+        this.ifr.src = new_url;
+        $("#starturl").val(this.crawler_prefix + new_url);
+    }
     else
     {
       // Relative URL
       var new_url = this.app_prefix + url
       this.app_prefix = new_url.substring(0, new_url.lastIndexOf("/") + 1);
-      ifr.src = new_url;
+      this.ifr.src = new_url;
       $("#starturl").val(this.crawler_prefix + new_url);
     }
+
+    // retrieve base domain on iframe load if none is specified
+    if (this.stay_on_base_domain)
+    {
+      // when the iframe has loaded
+      $("#").load(this.updateBaseDomain(this));
+    }
   };
+
+  this.updateBaseDomain = function()
+  {
+    if (this.base_domain === "")
+    {
+      this.base_domain = this.getCurrentDomain();
+      $("#domain").val(this.base_domain);
+    }
+  };
+
+  this.getCurrentDomain = function()
+  {
+    return this.base_domain = this.ifr.contentDocument.domain;
+  }
 
   this.dot_refresh = function()
   {
@@ -61,7 +87,6 @@ function MuCrawler()
       $("#dot-contents").val(mucrawler.wsm.toXml());
       //$("#nodecontents").html(this.wsm.m_domTree.toXml(true));
     }
-    this.generate_dot_graph(mucrawler.wsm.toDot());
   };
 
   this.generate_dot_graph = function()
@@ -105,32 +130,32 @@ function MuCrawler()
       alert("No WSM instantiated. Instantiate a WSM first.");
       return;
     }
-    var doc = ifr.contentDocument || ifr.contentWindow.document;
+
+    if ($("#dot-autorefresh").prop("checked"))
+    {
+      mucrawler.dot_refresh();
+    }
+
+    if ($("#graph-autorefresh").prop("checked"))
+    {
+      this.generate_dot_graph(mucrawler.wsm.toDot());
+    }
+
+    var doc = this.ifr.contentDocument || this.ifr.contentWindow.document;
+
     // Attempt click at element in iframe
     if (this.next_click === null)
     {
+      // Finished Navigation
       $("#elpath").html("I SAID we are done!");
       mucrawler.dot_refresh();
+      this.generate_dot_graph(mucrawler.wsm.toDot());
       return; // We are done
     }
     if (this.next_click.getContents() !== "")
     {
       var el = get_element_from_path(doc, new PathExpression(this.next_click.getContents()));
-      if (el === undefined)
-        console.error("Element should not be undefined");
-
-      else if (el === null)
-        console.log("Null returned (maybe an iframe)");
-      else if (el.nodeName === "A" || el.nodeName === "a")
-      {
-        // With anchors, we need to specify [0]
-        $(el)[0].click();
-      }
-      else
-      {
-        // jQuery trickery to provoke click
-        $(el).click();
-      }
+      this.performClick(el);
     }
     else
     {
@@ -154,16 +179,56 @@ function MuCrawler()
     else
     {
       // Let's not waste time and explore!
+      // @todo: !use_timeout does not seem to work
       iframeReady();
     }
   };
 
-  this.iframeReady = function(mc)
+  this.performClick = function(el)
   {
-    var doc = ifr.contentDocument || ifr.contentWindow.document;
-    var dom = DomNode.parseFromDom(doc);
+    if (el === undefined)
+    {
+      console.error("Element should not be undefined");
+    }
+    else if (el === null)
+    {
+      console.log("Null returned (maybe an iframe)");
+    }
+    // Anchor
+    else if (el.nodeName === "A" || el.nodeName === "a")
+    {
+      // domain verification
+      if (this.stay_on_base_domain && this.verifyLink)
+      {
+        if (el.hostname !== undefined || el.hostname !== null || el.hostname !== "")
+        {
+          // if domain is in whiteList, click!
+          // @todo: create an array of accepted domains or use wild characters
+          if (el.hostname === this.base_domain)
+          {
+            $(el)[0].click();
+          }
+        }
+        else
+        {
+          $(el)[0].click();
+        }
+      }
+    }
+    else
+    {
+      // jQuery trickery to provoke click
+      $(el).click();
+    }
+  }
+
+  this.iframeReady = function()
+  {
+    var doc = this.ifr.contentDocument || this.ifr.contentWindow.document;
+    var dom = DomNode.parseFromDoc(doc);
     // Add URL
-    dom.setAttribute("url", ifr.src);
+    dom.setAttribute("url", this.ifr.src);
+
     // @todo: verify ajax here with 3rd param
     this.wsm.setCurrentDom(dom, this.next_click.getContents(), false);
     $("#nodeid").html(this.wsm.m_currentNodeId);
@@ -204,7 +269,6 @@ function MuCrawler()
     if ($("#automode").prop("checked"))
       this.next_step();
   };
-
 }
 
 function iframeReady()
@@ -250,15 +314,15 @@ function poll_interval_slide_change(event, ui)
 }
 
 $(document).ready(function() {
+    // Our main crawler session
     mucrawler = new MuCrawler();
-
-    // Get global handle to iframe
-    ifr = document.getElementById("navwindow");
 
     // Assign handler to button "load"
     $("#btn-load").click(function () {
         mucrawler.load_url($("#starturl").val());
     });
+
+    // Pressing Enter on URL input
     $("#starturl").keyup(function (e) {
         if (e.keyCode == 13)
         {
@@ -266,15 +330,14 @@ $(document).ready(function() {
         }
     });
 
-    // Assign handler to button "move on"
-    //$("#btn-moveon").click(next_step);
+    // Step button Handler
     $("#elpath").click(function () {
         mucrawler.next_step();
         return false;
     });
 
     // Assign handler to button "DOT refresh"
-    // $("#btn-dot-refresh").click(mucrawler.dot_refresh);
+    $("#btn-dot-refresh").click(mucrawler.dot_refresh);
 
     // Assing handler to button "Graph refresh"
     $("#btn-graph-refresh").click( mucrawler.generate_dot_graph );
@@ -295,8 +358,10 @@ $(document).ready(function() {
         define_oracles();
     });
 
+    // Interval Slider
     $("#poll-interval-slider").slider({"min": 1, "max": 5, "value" : 3, "change": poll_interval_slide_change});
 
+    // Element Highliting button
     $("#highlight").click(function() {
         if ($("#highlight").prop("checked"))
         {
