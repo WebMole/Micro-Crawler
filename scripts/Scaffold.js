@@ -234,7 +234,24 @@ function MuCrawler()
       // jQuery trickery to provoke click
       $(el).click();
     }
-  }
+  };
+
+
+  // @todo: make this more precise
+  this.isAjaxNode = function()
+  {
+    var lastReq = ajaxSession.getLastRequest();
+    if (lastReq  !== undefined)
+    {
+      ajaxSession.emptyCapturedRequests();
+     return true;
+    }
+    else
+    {
+      return false;
+    }
+  };
+
 
   this.iframeReady = function()
   {
@@ -243,11 +260,9 @@ function MuCrawler()
     // Add URL
     dom.setAttribute("url", this.ifr.contentWindow.location.href);
 
-    // @todo: verify ajax here with 3rd param
+    // Ajax verification is applied here
+    this.wsm.setCurrentDom(dom, this.next_click.getContents(), this.isAjaxNode());
 
-
-
-    this.wsm.setCurrentDom(dom, this.next_click.getContents(), false);
     $("#nodeid").html(this.wsm.m_currentNodeId);
     this.next_click = this.wsm.getNextClick();
     if (this.next_click === null)
@@ -415,6 +430,9 @@ $(document).ready(function() {
     define_oracles();
 });
 
+// global atm, will change soon
+var ajaxSession = null;
+
 $( document ).ready(function() {
   var $ifr = $("#navwindow");
   var ifr = $ifr[0];
@@ -432,7 +450,6 @@ $( document ).ready(function() {
         "</code></pre>"
     );
   }
-  var ajaxSession = null;
 
   $ifr.load(function () {
     /*

@@ -23,8 +23,8 @@ function caughtRequest()
  */
 function AjaxListener(target, callback)
 {
-  this.capturedRequests = [];
   var s_ajaxListener = new Object();
+  s_ajaxListener.capturedRequests = [];
 
   /**
    * update target and override prototypes
@@ -95,6 +95,9 @@ function AjaxListener(target, callback)
    */
   s_ajaxListener.customXHROpen = function(method, url, async)
   {
+
+    var currentRequest = new caughtRequest();
+
     if (!method)
     {
       method = '';
@@ -110,6 +113,9 @@ function AjaxListener(target, callback)
 
     s_ajaxListener.method = method;
     s_ajaxListener.url = url;
+
+    currentRequest.m_method = method;
+    currentRequest.m_url = url;
 
     if (s_ajaxListener.method.toLowerCase() === "get") {
       console.log("AjaxListener :: open >> GET Captured");
@@ -129,6 +135,7 @@ function AjaxListener(target, callback)
     else if (s_ajaxListener.method.toLowerCase() === "delete") {
       console.log("AjaxListener :: open >> DELETE Captured");
     }
+    s_ajaxListener.capturedRequests.push(currentRequest);
   };
 
   /**
@@ -150,6 +157,7 @@ function AjaxListener(target, callback)
     {
       // The should be some data only when method is post :)
       s_ajaxListener.data = params;
+      s_ajaxListener.capturedRequests[s_ajaxListener.capturedRequests.length-1].m_data = params;
     }
 
     // Attach the superCallback to the onReadyStateChange
@@ -163,6 +171,18 @@ function AjaxListener(target, callback)
     s_ajaxListener.callback.apply(s_ajaxListener.target);
   };
 
+  s_ajaxListener.getLastRequest = function()
+  {
+    return s_ajaxListener.capturedRequests[s_ajaxListener.capturedRequests.length-1];
+  };
+
+  s_ajaxListener.emptyCapturedRequests = function()
+  {
+    s_ajaxListener.capturedRequests.length = 0;
+  };
+
+  this.getLastRequest = s_ajaxListener.getLastRequest;
+  this.emptyCapturedRequests = s_ajaxListener.emptyCapturedRequests;
 
   // Construct
   this.setTarget(target);
