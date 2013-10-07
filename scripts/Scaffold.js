@@ -20,10 +20,12 @@ function MuCrawler()
   this.stay_on_base_domain = true; // If false, will continue navigation even if we move from one site to another
   this.verifyLink = true; // if true, prevents click instead of going into the url and comparing domain
   this.crawler_prefix = document.URL.substring(0, document.URL.lastIndexOf("/") + 1);
+  this.iframeHasHandler = false;
+  this.needToUpdateBase = true;
 
   this.load_url = function(url)
   {
-    if (url[0] == "/" || url.substring(0, 5) == "http:")
+    if (url[0] === "/" || url.substring(0, 5) === "http:")
     {
       // Absolute URL
       var without_c_p = url.substring(this.crawler_prefix.length);
@@ -31,7 +33,7 @@ function MuCrawler()
       this.ifr.src = url;
       $("#starturl").val(url);
     }
-    else if (url[0] == "#")
+    else if (url[0] === "#")
     {
       // Anchor within page
       var new_url = this.app_prefix + url;
@@ -47,27 +49,39 @@ function MuCrawler()
       $("#starturl").val(this.crawler_prefix + new_url);
     }
 
-    // retrieve base domain on iframe load if none is specified
-    if (this.stay_on_base_domain)
+    // Execute this once: set an onload on the iframe
+    if (!this.iframeHasHandler)
     {
-      // when the iframe has loaded
-      $("#").load(this.updateBaseDomain(this));
+      // Attach onIframeReday Handler
+      var tmp = this;
+      $("#navwindow").load(this.onIframeLoaded);
+      this.iframeHasHandler = true;
     }
   };
 
-  this.updateBaseDomain = function()
+  this.onIframeLoaded = function()
   {
-    if (this.base_domain === "")
+    mucrawler.updateDomain();
+  };
+
+  this.updateDomain = function()
+  {
+    if (this.stay_on_base_domain && this.needToUpdateBase)
     {
-      this.base_domain = this.getCurrentDomain();
-      $("#domain").val(this.base_domain);
+      if (this.base_domain === "" || $("#domain").val() === "")
+      {
+        this.base_domain = this.getCurrentDomain();
+        $("#domain").val(this.base_domain);
+      }
+      this.needToUpdateBase = false;
     }
   };
 
   this.getCurrentDomain = function()
   {
-    return this.base_domain = this.ifr.contentDocument.domain;
-  }
+    this.base_domain = this.ifr.contentDocument.domain;
+    return this.base_domain;
+  };
 
   this.dot_refresh = function()
   {
@@ -200,7 +214,7 @@ function MuCrawler()
       // domain verification
       if (this.stay_on_base_domain && this.verifyLink)
       {
-        if (el.hostname !== undefined || el.hostname !== null || el.hostname !== "")
+        if (el.hostname !== "")
         {
           // if domain is in whiteList, click!
           // @todo: create an array of accepted domains or use wild characters
@@ -227,9 +241,12 @@ function MuCrawler()
     var doc = this.ifr.contentDocument || this.ifr.contentWindow.document;
     var dom = DomNode.parseFromDoc(doc);
     // Add URL
-    dom.setAttribute("url", this.ifr.src);
+    dom.setAttribute("url", this.ifr.contentWindow.location.href);
 
     // @todo: verify ajax here with 3rd param
+
+
+
     this.wsm.setCurrentDom(dom, this.next_click.getContents(), false);
     $("#nodeid").html(this.wsm.m_currentNodeId);
     this.next_click = this.wsm.getNextClick();
@@ -285,27 +302,27 @@ function define_oracles()
 function poll_interval_slide_change(event, ui)
 {
   var out = "0.25 s";
-  if (ui.value == 1)
+  if (ui.value === 1)
   {
     out = "0.1 s";
     mucrawler.pause_interval = 100;
   }
-  else if (ui.value == 2)
+  else if (ui.value === 2)
   {
     out = "0.25 s";
     mucrawler.pause_interval = 250;
   }
-  else if (ui.value == 3)
+  else if (ui.value === 3)
   {
     out = "0.5 s";
     mucrawler.pause_interval = 500;
   }
-  else if (ui.value == 4)
+  else if (ui.value === 4)
   {
     out = "1 s";
     mucrawler.pause_interval = 1000;
   }
-  else if (ui.value == 5)
+  else if (ui.value === 5)
   {
     out = "2 s";
     mucrawler.pause_interval = 2000;
@@ -324,7 +341,7 @@ $(document).ready(function() {
 
     // Pressing Enter on URL input
     $("#starturl").keyup(function (e) {
-        if (e.keyCode == 13)
+        if (e.keyCode === 13)
         {
           mucrawler.load_url($("#starturl").val());
         }
@@ -396,4 +413,57 @@ $(document).ready(function() {
     });
 
     define_oracles();
+});
+
+$( document ).ready(function() {
+  var $ifr = $("#navwindow");
+  var ifr = $ifr[0];
+  var pageLoad = 0;
+
+
+  function callback() {
+    $("#ajax-listener").append(
+      "<li><span class='method'>" +
+        this.method +
+        "</span><a class='url' href='" + this.url + "'>" +
+        this.url +
+        "</a><pre class='data'><code>" +
+        this.data + //@todo: escape html and display as code :)
+        "</code></pre>"
+    );
+  }
+  var ajaxSession = null;
+
+  $ifr.load(function () {
+    /*
+     * We need to pass the target every time so we can listen to ajax on the iframe's XMLHttpRequest object
+     *  since it's a new one on each page load (logically). We use the target to override open and send prototypes.
+     *  To capture requests within the same page, simply use current window's XMLHttpRequest
+     */
+    var target = ifr.contentWindow.XMLHttpRequest;
+    // First time loading
+    if (ajaxSession === null)
+    {
+      ajaxSession = new AjaxListener(target, callback);
+    }
+    else
+    {
+      // update target
+      ajaxSession.setTarget(target);
+    }
+
+    $('#iframeStatus').html('Ready').addClass('ready');
+    $('#href').html(ifr.contentWindow.location.href);
+    $('#href').attr("href", ifr.contentWindow.location.href);
+    $('#host').html(ifr.contentWindow.location.host);
+    $('#pathname').html(ifr.contentWindow.location.pathname);
+    $('#protocol').html(ifr.contentWindow.location.protocol);
+    $('#pagesLoaded').html(++pageLoad);
+
+    console.log("iFrame Loaded");
+    console.log("Iframe's Window Object:");
+    console.log(ifr.contentWindow);
+    console.log("Iframe's Document:");
+    console.log(ifr.contentDocument);
+  });
 });

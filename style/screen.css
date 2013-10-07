@@ -150,3 +150,11 @@ html, body {
   width: 400px;
   height: 50px;
 }
+
+#iframe-status th
+{
+    text-align: left;
+}
+#iframe-status .ready {
+    color: green;
+}
