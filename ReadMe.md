@@ -16,7 +16,9 @@ Install browser dependencies
 
 ## Usage
 
-Run website on a webserver
+Run website on a webserver. If you have [Python](https://www.python.org/), you can simply run
+
+    python -m SimpleHTTPServer
 
 ### Same Origin Policy
 
