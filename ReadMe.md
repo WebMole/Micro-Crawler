@@ -1,6 +1,6 @@
 # µ-Crawler
 
-A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms. Visit the [live demo](http://webmole.github.io/micro-crawler/)
+A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms. Visit the [live demo](http://webmole.github.io/Micro-Crawler/)
 
 ## Installation
 
@@ -26,7 +26,7 @@ You could also use python like this:
 
     python -m SimpleHTTPServer 8000
 
-Otherwise, you could also open run it directly by opening `index.html` in a browser, but some features may not work ;)
+Don't try to run `index.html` directly from your filesystem because you will get some javascript error like `Error: Permission denied to access property 'document'` or `SecurityError: The operation is insecure.`
 
 ### Same Origin Policy
 
