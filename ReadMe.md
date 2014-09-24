@@ -1,6 +1,6 @@
 # µ-Crawler
 
-A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms. Visit the [live demo](http://webmole.github.io/Micro-Crawler/)
+A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms.
 
 ## Installation
 
