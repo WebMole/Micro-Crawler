@@ -16,11 +16,15 @@ Install browser dependencies
 
 ## Usage
 
-Run website on a webserver. Since some of the examples in `/sites/` are written in `php`, you may want to run this:
+You can run website on any webserver, but since some of the examples in `/sites/` are written in `php`, you may want to run this:
 
     php -S localhost:8000
 
 Requires PHP version `5.4.0` or higher. For details, see [PHP Built-in web server](http://php.net/manual/en/features.commandline.webserver.php)
+
+You could also use python like this:
+
+    python -m SimpleHTTPServer 8000
 
 ### Same Origin Policy
 
@@ -40,7 +44,11 @@ At this time, there is not much in `gruntfile` yet, [livereload](https://chrome.
 
 ### Todo
 
+* Provide a way to run headleassly using [PhantomJS](http://phantomjs.org/) or something like [dalekjs](http://dalekjs.com/) to run this in multiple browsers.
 * Fix the `vanilla` infinite loop at end of crawl. 
-    * For the moment, uncheck `Explore automatically` in `WSM settings` when it's done
+    * Temp fix: uncheck `Explore automatically` in `WSM settings` when it's done
 * Set a max width for `Next element to click:` in `WSM statistics` 
 * Move `AutoRefresh` on a fixed place so it's easier to click when graphs updates automatically
+
+
+Pull requests are welcome!
