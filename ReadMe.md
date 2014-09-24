@@ -1,6 +1,6 @@
 # µ-Crawler
 
-A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms.
+A basic and tiny crawler that uses the [Web-State-Machine](https://github.com/WebMole/Web-State-Machine) algorithms. Visit the [live demo](http://webmole.github.io/micro-crawler/)
 
 ## Installation
 
@@ -25,6 +25,8 @@ Requires PHP version `5.4.0` or higher. For details, see [PHP Built-in web serve
 You could also use python like this:
 
     python -m SimpleHTTPServer 8000
+
+Otherwise, you could also open run it directly by opening `index.html` in a browser, but some features may not work ;)
 
 ### Same Origin Policy
 
